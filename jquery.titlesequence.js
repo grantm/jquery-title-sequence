@@ -68,7 +68,12 @@
             if(cue.pause) {
                 this.sequence.unshift({pause: cue.pause});
             }
-            return target.animate(cue.animate, cue.duration * this.time_factor, next_cue);
+            return target.animate(
+                cue.animate,
+                cue.duration * this.time_factor,
+                cue.easing || 'swing',
+                next_cue
+            );
         }
         else if(cue.pause) {
             return setTimeout(next_cue, cue.pause * this.time_factor);
