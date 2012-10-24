@@ -12,66 +12,69 @@
 
 (function($) {
 
-    $.fn.titleSequence = function(frames, options) {
+    $.fn.titleSequence = function(sequence, options) {
         $(this).each(function(x) {
-            var sequence = $.extend({
+            var title_sequence = $.extend({
                 el: $(this),
-                frames: frames,
-                next_frame: $.fn.titleSequence.next_frame,
+                sequence: sequence,
+                next_cue: $.fn.titleSequence.next_cue,
                 time_factor: 1
             }, options);
-            sequence.next_frame();
+            title_sequence.next_cue();
         });
         return this;
     };
 
-    $.fn.titleSequence.next_frame = function() {
+    $.fn.titleSequence.next_cue = function() {
         var seq = this;
-        var next_frame = function(){ seq.next_frame(); };
-        if(this.frames.length == 0) {
+        var next_cue = function(){ seq.next_cue(); };
+        if(this.sequence.length == 0) {
             return;
         }
-        var frame = this.frames.shift();
-        if(typeof(frame) === 'function') {
-            return frame(this);
+        var cue = this.sequence.shift();
+        if(typeof(cue) === 'function') {
+            return cue(this);
         }
         var target;
-        if(frame.delete) {
-            $(frame.delete).remove();
+        if(cue.delete) {
+            $(cue.delete).remove();
         }
-        if(frame.content !== undefined) {
-            var div = $('<div />').html( frame.content );
-            if(frame.id) {
-                div.attr('id', frame.id);
+        if(cue.content !== undefined) {
+            var div = $('<div />').html( cue.content );
+            if(cue.id) {
+                div.attr('id', cue.id);
             }
-            if(frame.class) {
-                div.addClass(frame.class);
+            if(cue.class) {
+                div.addClass(cue.class);
             }
-            if(frame.css) {
-                div.css(frame.css);
+            if(cue.css) {
+                div.css(cue.css);
             }
-            var parent = frame.container ? this.el.find(frame.container) : this.el;
+            var parent = cue.container ? this.el.find(cue.container) : this.el;
             parent.append(div);
             target = div;
         }
-        else if(frame.selector) {
-            target = $(frame.selector);
+        else if(cue.selector) {
+            target = $(cue.selector);
             if(target.length !== 1) {
-                alert('Error: Selector "' + frame.selector + '" matched ' + target.length + ' elements');
+                alert('Error: Selector "' + cue.selector + '" matched ' + target.length + ' elements');
                 return;
             }
-        }
-        if(frame.duration) {
-            if(frame.pause) {
-                this.frames.unshift({pause: frame.pause});
+            if(cue.css) {
+                target.css(cue.css);
             }
-            return target.animate(frame.animate, frame.duration * this.time_factor, next_frame);
         }
-        else if(frame.pause) {
-            return setTimeout(next_frame, frame.pause * this.time_factor);
+        if(cue.duration) {
+            if(cue.pause) {
+                this.sequence.unshift({pause: cue.pause});
+            }
+            return target.animate(cue.animate, cue.duration * this.time_factor, next_cue);
+        }
+        else if(cue.pause) {
+            return setTimeout(next_cue, cue.pause * this.time_factor);
         }
         else {
-            return this.next_frame();
+            return this.next_cue();
         }
     };
 
