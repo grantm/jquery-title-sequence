@@ -32,6 +32,7 @@
               <li><a href="#reference">Reference Documentation</a></li>
               <li><a href="#function-arguments">Function Arguments</a></li>
               <li><a href="#cue-properties">Cue Properties</a></li>
+              <li><a href="#container-styling">Container Styling</a></li>
               <li><a href="#examples">Examples</a></li>
             </ul>
 
@@ -54,6 +55,8 @@
 
             <p>The <a href="#examples">examples</a> directory includes some demos to get you started.</p>
 
+            <p>The plugin is dual-licensed under the MIT and GPL licences.</p>
+
             <h1 id="reference">Reference Documentation</h1>
 
             <p>To use the jquery.titlesequence plugin, you'll need two things:</p>
@@ -64,7 +67,7 @@
             </ul>
 
             <p>The <code>sequence</code> is just an array, and each <code>cue</code> is
-            just a Javascript object whose properties define what should happen.  For
+            just a Javascript object-literal whose properties define what should happen.  For
             example:</p>
 
             <pre>
@@ -79,7 +82,7 @@
   ]);
             </pre>
 
-            <p>The first cue in this sequence will add one line of text ("line one") to
+            <p>The first cue in this sequence will add one line of text ("Line one") to
             the element with the ID "titles" then, after a 500 millisecond pause, add a
             second line of text.  The position, and appearance of the text can be set by
             supplying a <code>css</code> property in the <code>cue</code> object:</p>
@@ -184,6 +187,25 @@
             </dl>
 
 
+            <h1 id="container-styling">Container Styling</h1>
+
+            <p>You will probably want to use CSS to style your title sequence container
+            element to allow absolute positioning of title elements; disable word wrapping
+            and hide overflow:</p>
+
+            <pre>
+  #titles {
+    position: relative;
+    width: 640px;
+    height: 480px;
+    background-color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+  },
+            </pre>
+
+
+
             <h1 id="examples">Examples</h1>
 
             <dl>
@@ -198,17 +220,16 @@
               <dd>A scrolling effect in the style of movie closing credits.</dd>
 
             </dl>
+
+            <hr>
+
+            <p>Copyright &copy; 2012 Grant McLean</p>
+
           </div><!--/span-->
         </div><!--/row-->
 
       </div><!--/span-->
     </div><!--/row-->
-
-    <hr>
-
-    <footer>
-      <p>&nbsp;</p>
-    </footer>
 
   </div><!--/.fluid-container-->
 
