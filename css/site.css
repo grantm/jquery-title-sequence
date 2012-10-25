@@ -21,30 +21,8 @@ body h2 {
   margin-top: 30px;
 }
 
-#demo-titles {
+div.row-fluid #demo-titles {
   float: right;
-  position: relative;
-  width: 248px;
-  height: 186px;
-  border: 1px solid #cccccc;
-  background-color: #eeeeee;
-  border-radius: 4px;
-  margin: 4px 0 20px 20px;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-#demo-titles div {
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-#demo-titles a.btn {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-left: -58px;
-  margin-top: -18px;
 }
 
 dl dd {
