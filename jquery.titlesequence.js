@@ -35,34 +35,34 @@
         if(typeof(cue) === 'function') {
             return cue(this);
         }
-        var target;
         if(cue.delete) {
             $(cue.delete).remove();
         }
-        if(cue.content !== undefined) {
-            var div = $('<div />').html( cue.content );
-            if(cue.id) {
-                div.attr('id', cue.id);
-            }
-            if(cue.class) {
-                div.addClass(cue.class);
-            }
-            if(cue.css) {
-                div.css(cue.css);
-            }
-            var parent = cue.container ? this.el.find(cue.container) : this.el;
-            parent.append(div);
-            target = div;
-        }
-        else if(cue.selector) {
+        var target;
+        if(cue.selector) {
             target = $(cue.selector);
             if(target.length !== 1) {
                 alert('Error: Selector "' + cue.selector + '" matched ' + target.length + ' elements');
                 return;
             }
-            if(cue.css) {
-                target.css(cue.css);
+        }
+        if(cue.content !== undefined) {
+            if(!target) {
+                target = $('<div />').html( cue.content );
             }
+        }
+        if(cue.id) {
+            target.attr('id', cue.id);
+        }
+        if(cue.class) {
+            target.addClass(cue.class);
+        }
+        if(cue.css) {
+            target.css(cue.css);
+        }
+        if(cue.content !== undefined) {
+            var parent = cue.container ? this.el.find(cue.container) : this.el;
+            parent.append(target);
         }
         if(cue.duration) {
             if(cue.pause) {
