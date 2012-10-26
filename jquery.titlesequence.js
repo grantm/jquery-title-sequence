@@ -70,6 +70,14 @@
             if(cue.pause) {
                 this.sequence.unshift({pause: cue.pause});
             }
+            if(cue.no_wait) {
+                target.animate(
+                    cue.animate,
+                    cue.duration * this.time_factor,
+                    cue.easing || 'swing'
+                );
+                return this.next_cue();
+            }
             return target.animate(
                 cue.animate,
                 cue.duration * this.time_factor,
