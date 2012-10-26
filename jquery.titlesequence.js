@@ -12,28 +12,15 @@
 
 (function($) {
 
-    var next_cue;
-
-    $.fn.titleSequence = function(sequence, options) {
-        $(this).each(function(x) {
-            var title_sequence = $.extend({
-                el: $(this),
-                sequence: sequence,
-                next_cue: next_cue,
-                time_factor: 1
-            }, options);
-            title_sequence.next_cue();
-        });
-        return this;
-    };
-
-    next_cue = function() {
+    var next_cue = function(cue) {
         var seq = this;
-        var next_cue = function(){ seq.next_cue(); };
-        if(this.sequence.length == 0) {
-            return;
+        if(!cue) {
+            this.i  = this.i + 1;
+            if(this.i > this.sequence.length) {  // Sequence is done
+                return;
+            }
+            cue = this.sequence[ this.i - 1 ];
         }
-        var cue = this.sequence.shift();
         if(typeof(cue) === 'function') {
             return cue(this);
         }
@@ -67,30 +54,42 @@
             parent.append(target);
         }
         if(cue.duration) {
-            if(cue.pause) {
-                this.sequence.unshift({pause: cue.pause});
-            }
+            var pause_cue = cue.pause ? {pause: cue.pause} : undefined;
             if(cue.no_wait) {
                 target.animate(
                     cue.animate,
                     cue.duration * this.time_factor,
                     cue.easing || 'swing'
                 );
-                return this.next_cue();
+                return seq.next_cue(pause_cue);
             }
             return target.animate(
                 cue.animate,
                 cue.duration * this.time_factor,
                 cue.easing || 'swing',
-                next_cue
+                function() { seq.next_cue(pause_cue); }
             );
         }
         else if(cue.pause) {
-            return setTimeout(next_cue, cue.pause * this.time_factor);
+            return setTimeout(function() { seq.next_cue(); }, cue.pause * this.time_factor);
         }
         else {
-            return this.next_cue();
+            return seq.next_cue();
         }
+    };
+
+    $.fn.titleSequence = function(sequence, options) {
+        $(this).each(function(x) {
+            var title_sequence = $.extend({
+                el: $(this),
+                i: 0,
+                sequence: sequence,
+                next_cue: next_cue,
+                time_factor: 1
+            }, options);
+            title_sequence.next_cue();
+        });
+        return this;
     };
 
 })(jQuery);
