@@ -12,75 +12,84 @@
 
 (function($) {
 
-    $.fn.titleSequence = function(sequence, options) {
-        $(this).each(function(x) {
-            var title_sequence = $.extend({
-                el: $(this),
-                sequence: sequence,
-                next_cue: $.fn.titleSequence.next_cue,
-                time_factor: 1
-            }, options);
-            title_sequence.next_cue();
-        });
-        return this;
-    };
-
-    $.fn.titleSequence.next_cue = function() {
+    var next_cue = function(cue) {
         var seq = this;
-        var next_cue = function(){ seq.next_cue(); };
-        if(this.sequence.length == 0) {
-            return;
+        if(!cue) {
+            this.i  = this.i + 1;
+            if(this.i > this.sequence.length) {  // Sequence is done
+                return;
+            }
+            cue = this.sequence[ this.i - 1 ];
         }
-        var cue = this.sequence.shift();
         if(typeof(cue) === 'function') {
             return cue(this);
         }
-        var target;
         if(cue.delete) {
             $(cue.delete).remove();
         }
-        if(cue.content !== undefined) {
-            var div = $('<div />').html( cue.content );
-            if(cue.id) {
-                div.attr('id', cue.id);
-            }
-            if(cue.class) {
-                div.addClass(cue.class);
-            }
-            if(cue.css) {
-                div.css(cue.css);
-            }
-            var parent = cue.container ? this.el.find(cue.container) : this.el;
-            parent.append(div);
-            target = div;
-        }
-        else if(cue.selector) {
+        var target;
+        if(cue.selector) {
             target = $(cue.selector);
             if(target.length !== 1) {
                 alert('Error: Selector "' + cue.selector + '" matched ' + target.length + ' elements');
                 return;
             }
-            if(cue.css) {
-                target.css(cue.css);
+        }
+        if(cue.content !== undefined) {
+            if(!target) {
+                target = $('<div />').html( cue.content );
             }
         }
+        if(cue.id) {
+            target.attr('id', cue.id);
+        }
+        if(cue.class) {
+            target.addClass(cue.class);
+        }
+        if(cue.css) {
+            target.css(cue.css);
+        }
+        if(cue.content !== undefined) {
+            var parent = cue.container ? this.el.find(cue.container) : this.el;
+            parent.append(target);
+        }
         if(cue.duration) {
-            if(cue.pause) {
-                this.sequence.unshift({pause: cue.pause});
+            var pause_cue = cue.pause ? {pause: cue.pause} : undefined;
+            if(cue.no_wait) {
+                target.animate(
+                    cue.animate,
+                    cue.duration * this.time_factor,
+                    cue.easing || 'swing'
+                );
+                return seq.next_cue(pause_cue);
             }
             return target.animate(
                 cue.animate,
                 cue.duration * this.time_factor,
                 cue.easing || 'swing',
-                next_cue
+                function() { seq.next_cue(pause_cue); }
             );
         }
         else if(cue.pause) {
-            return setTimeout(next_cue, cue.pause * this.time_factor);
+            return setTimeout(function() { seq.next_cue(); }, cue.pause * this.time_factor);
         }
         else {
-            return this.next_cue();
+            return seq.next_cue();
         }
+    };
+
+    $.fn.titleSequence = function(sequence, options) {
+        $(this).each(function(x) {
+            var title_sequence = $.extend({
+                el: $(this),
+                i: 0,
+                sequence: sequence,
+                next_cue: next_cue,
+                time_factor: 1
+            }, options);
+            title_sequence.next_cue();
+        });
+        return this;
     };
 
 })(jQuery);
