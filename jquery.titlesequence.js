@@ -37,8 +37,9 @@
         }
         if(cue.content !== undefined) {
             if(!target) {
-                target = $('<div />').html( cue.content );
+                target = $('<div />');
             }
+            target.html( cue.content );
         }
         if(cue.id) {
             target.attr('id', cue.id);
