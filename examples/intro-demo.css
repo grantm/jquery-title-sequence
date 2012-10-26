@@ -16,6 +16,7 @@
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
+  line-height: 135%;
 }
 
 #demo-titles a.btn {
