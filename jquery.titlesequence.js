@@ -12,12 +12,14 @@
 
 (function($) {
 
+    var next_cue;
+
     $.fn.titleSequence = function(sequence, options) {
         $(this).each(function(x) {
             var title_sequence = $.extend({
                 el: $(this),
                 sequence: sequence,
-                next_cue: $.fn.titleSequence.next_cue,
+                next_cue: next_cue,
                 time_factor: 1
             }, options);
             title_sequence.next_cue();
@@ -25,7 +27,7 @@
         return this;
     };
 
-    $.fn.titleSequence.next_cue = function() {
+    next_cue = function() {
         var seq = this;
         var next_cue = function(){ seq.next_cue(); };
         if(this.sequence.length == 0) {
