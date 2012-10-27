@@ -1,5 +1,6 @@
 
     var sequence = [
+
         {
             content: 'This is<br />an example</br>title sequence',
             id: 'scroll1',
@@ -160,7 +161,7 @@
             css: { left: '88px', top: '16px', 'font-family': '"Trebuchet MS", Verdana, sans-serif', 'font-size': '40px', 'font-weight': 'bold', opacity: 0 },
             animate: { opacity: 1 },
             duration: 100,
-            pause: 800
+            pause: 600
         },
 
         {
@@ -169,7 +170,7 @@
             css: { left: '40px', top: '23px', 'font-family': '"Times New Roman", Gerogia, serif', 'font-size': '76px', opacity: 0 },
             animate: { opacity: 1 },
             duration: 100,
-            pause: 800
+            pause: 600
         },
 
         {
@@ -178,7 +179,7 @@
             css: { left: '108px', top: '86px', 'font-family': '"Courier New", monospace', 'font-size': '40px', 'font-weight': 'normal', opacity: 0 },
             animate: { opacity: 1 },
             duration: 100,
-            pause: 800
+            pause: 600
         },
 
         {
@@ -187,7 +188,7 @@
             css: { left: '8px', top: '110px', 'font-family': '"Arial Black", sans-serif', 'font-size': '40px', 'font-weight': 'bold' },
             animate: { opacity: 1 },
             duration: 100,
-            pause: 800
+            pause: 600
         },
 
         {
@@ -195,6 +196,30 @@
             animate: { opacity: 0 },
             duration: 1600,
             pause: 800
+        },
+
+        {
+            content: '',
+            id: 'waterfall',
+            css: {width: '374px', height: '190px', top: 0, left: '-126px', opacity: 0},
+            animate: {opacity: 1},
+            duration: 500
+        },
+
+        {
+            selector: '#waterfall',
+            animate: {left: 0},
+            duration: 4000,
+            no_wait: true
+        },
+
+        {
+            content: 'and<br />images',
+            id: 'photo-title',
+            css: {opacity: 0},
+            animate: {opacity: 1},
+            duration: 800,
+            pause: 3500
         },
 
         function(seq) {

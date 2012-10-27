@@ -65,3 +65,17 @@
   height: 90px;
 }
 
+#waterfall {
+  background-image: url(waterfall.jpg);
+}
+
+#photo-title {
+  text-align: right;
+  right: 10px;
+  bottom: 12px;
+  font-family: sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #eeeeee;
+  text-shadow: 0 0px 4px rgba(0, 0, 0, 0.8);
+}
