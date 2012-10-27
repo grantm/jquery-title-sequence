@@ -30,10 +30,6 @@
         var target;
         if(cue.selector) {
             target = $(cue.selector);
-            if(target.length !== 1) {
-                alert('Error: Selector "' + cue.selector + '" matched ' + target.length + ' elements');
-                return;
-            }
         }
         if(cue.content !== undefined) {
             if(!target) {
@@ -51,9 +47,12 @@
             target.css(cue.css);
         }
         if(cue.content !== undefined) {
-            var parent = cue.container ? this.el.find(cue.container) : this.el;
-            parent.append(target);
+            if(!cue.selector) {
+                var parent = cue.container ? this.el.find(cue.container) : this.el;
+                parent.append(target);
+            }
         }
+        var pause = cue.pause || 0;
         if(cue.duration) {
             var pause_cue = cue.pause ? {pause: cue.pause} : undefined;
             if(cue.no_wait) {
@@ -64,15 +63,25 @@
                 );
                 return seq.next_cue(pause_cue);
             }
-            return target.animate(
-                cue.animate,
-                cue.duration * this.time_factor,
-                cue.easing || 'swing',
-                function() { seq.next_cue(pause_cue); }
-            );
+            if(target.length === 1) {
+                return target.animate(
+                    cue.animate,
+                    cue.duration * this.time_factor,
+                    cue.easing || 'swing',
+                    function() { seq.next_cue(pause_cue); }
+                );
+            }
+            else {
+                target.animate(
+                    cue.animate,
+                    cue.duration * this.time_factor,
+                    cue.easing || 'swing'
+                );
+                pause = pause + cue.duration;
+            }
         }
-        else if(cue.pause) {
-            return setTimeout(function() { seq.next_cue(); }, cue.pause * this.time_factor);
+        if(pause > 0) {
+            return setTimeout(function() { seq.next_cue(); }, pause * this.time_factor);
         }
         else {
             return seq.next_cue();
