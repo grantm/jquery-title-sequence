@@ -35,6 +35,7 @@
               <li><a href="#cue-properties">Cue Properties</a></li>
               <li><a href="#container-styling">Container Styling</a></li>
               <li><a href="#examples">Examples</a></li>
+              <li><a href="#rendering">Rendering as a Movie</a></li>
             </ul>
 
             <h1 id="introduction">Introduction</h1>
@@ -80,8 +81,7 @@
       {
           content: "Line two"
       }
-  ]);
-            </pre>
+  ]);</pre>
 
             <p>The first cue in this sequence will add one line of text ("Line one") to
             the element with the ID "titles" then, after a 500 millisecond pause, add a
@@ -93,8 +93,7 @@
       content: "Line one",
       css: { top: '100px', left: '180px' },
       pause: 500
-  },
-            </pre>
+  },</pre>
 
             <p>You can also supply a <code>class</code> property which allows you to
             define your styling rules in a CSS file.  The content you provide will be
@@ -111,8 +110,7 @@
             <p>The <code>titleSequence()</code> function accepts two arguments:</p>
 
             <pre>
-  $('#titles').titleSequence(sequence, options);
-            </pre>
+  $('#titles').titleSequence(sequence, options);</pre>
 
             <p>The <code>sequence</code> argument must be an array of <code>cue</code>
             object-literals.  The expected object properties are shown below.
@@ -212,8 +210,7 @@
     background-color: #000000;
     white-space: nowrap;
     overflow: hidden;
-  },
-            </pre>
+  }</pre>
 
 
 
@@ -235,6 +232,35 @@
               <dd>The introductory demo at the top of this page.</dd>
 
             </dl>
+
+
+            <h1 id="rendering">Rendering as a Movie</h1>
+
+            <p>As well as publishing your title sequence in a web page, you can also render
+            it to a movie file (e.g.: .mp4 or .avi).  The examples directory includes a
+            script called <a href="examples/ph-render.js">ph-render.js</a> which can be used
+            with <a href="http://phantomjs.org/">PhantomJS</a> (a headless WebKit browser)
+            for this purpose.</p>
+
+            <p>You would start by editing ph-render.js to set the URL of the
+            page you want to render as well as the page width and height and
+            possibly the frame rate.  Then you would run the script like this
+            (adjust path to wherever you installed PhantomJS):</p>
+
+            <pre>
+  /opt/phantomjs/bin/phantomjs ./ph-render.js</pre>
+
+            <p>This will give you a directory full of PNG images which you can
+            then assemble into an animated GIF using ImageMagick, or into a
+            video using a tool like ffmpeg (AKA: avconv), e.g.:</p>
+
+            <pre>
+  avconv -i frames/frame_%04d.png -vcodec libx264 -preset veryslow -qp 0 movie.mp4</pre>
+
+            <p>(You can choose a different video codec and quality level, but
+            this example produces a top quality file which you can compress
+            later if needed).</p>
+
 
             <hr>
 
