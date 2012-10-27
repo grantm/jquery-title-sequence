@@ -84,8 +84,17 @@
             delete: '#group1',
         },
 
+        {
+            content: '',
+            id: 'bg',
+            css: { top: 0, left: 0, width: '248px', height: '186px', 'background-color': '#000000', opacity: 0 },
+            animate: { opacity: 1 },
+            duration: 300
+        },
+
         function(seq) {
             $('#demo-titles').css({ 'background-color': '#000000' });
+            $('#bg').remove();
             seq.next_cue();
         },
 
@@ -143,8 +152,17 @@
             delete: '#colour1'
         },
 
+        {
+            content: '',
+            id: 'bg',
+            css: { top: 0, left: 0, width: '248px', height: '186px', 'background-color': '#44c735', opacity: 0 },
+            animate: { opacity: 1 },
+            duration: 300
+        },
+
         function(seq) {
             $('#demo-titles').css({ 'background-color': '#44c735' });
+            $('#bg').remove();
             seq.next_cue();
         },
 
