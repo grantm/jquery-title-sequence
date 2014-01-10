@@ -32,8 +32,8 @@ body {
 
 #status-cat {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 300px;
+  height: 240px;
   overflow: hidden;
   white-space: nowrap;
 }
