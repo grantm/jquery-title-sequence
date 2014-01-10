@@ -1,0 +1,44 @@
+
+body {
+  margin: 20;
+  padding: 20;
+}
+
+#target {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 300px;
+  height: 265px;
+  background-color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#attribution {
+  position: absolute;
+  bottom: 4px;
+  left: 0px;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: #444444;
+  text-decoration: none;
+}
+
+#attribution:hover {
+  color: #ff9b08;
+}
+
+#status-cat {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#status-cat div {
+  position: absolute;
+}
+
