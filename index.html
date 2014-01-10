@@ -144,6 +144,11 @@
 
             <dl class="prop-list">
 
+              <dt>animate</dt> <dd>A collection of CSS properties and their
+              target values in standard object-literal syntax as used by
+              jQuery's <code>css</code> method.  Must be used in combination
+              with a <code>duration</code>.</dd>
+
               <dt>class</dt>
               <dd>This class (or space-separated list of classes) will be applied
               to the target element.</dd>
@@ -156,13 +161,11 @@
               <dd>Plain text or HTML markup which will be applied as the innerHTML
               of the target element, replacing any existing content it might have.</dd>
 
-              <dt>css</dt>
-              <dd>A collection of CSS properties and values in standard jQuery
-              object-literal syntax.</dd>
+              <dt>css</dt> <dd>A collection of CSS properties and their
+              starting values in standard jQuery object-literal syntax.</dd>
 
-              <dt>delete</dt>
-              <dd>Must be used in combination with a <code>selector</code>. Finds the matching
-              element(s) and removes from DOM.</dd>
+              <dt>delete</dt> <dd>A jQuery selector - the matching element(s)
+              will be removed from DOM.</dd>
 
               <dt>duration</dt>
               <dd>Must be used in combination with an <code>animate</code>.  Specifies the
