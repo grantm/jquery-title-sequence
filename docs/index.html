@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>jQuery titleSequence Plugin</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/site.css">
+  <link rel="stylesheet" type="text/css" href="examples/intro-demo.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span2"></div>
+      <div class="span8">
+
+        <div class="hero-unit">
+          <h1>jquery.titlesequence.js</h1>
+          <p>This plugin simplifies the creation of animated title sequences in
+          the style of opening titles or closing credits for a movie, or indeed
+          any style you can achieve with HTML and CSS.</p>
+          <div class="btn-group">
+            <a class="btn btn-info" title="Download a Zip file of source and examples" href="https://github.com/grantm/jquery-title-sequence/zipball/master">Zip</a>
+            <a class="btn btn-info" title="Download a Tar file of source and examples" href="https://github.com/grantm/jquery-title-sequence/tarball/master">Tar</a>
+            <a class="btn btn-info" title="Fork this project on GitHub" href="https://github.com/grantm/jquery-title-sequence/">Git</a>
+          </div>
+        </div>
+
+        <div class="row-fluid">
+          <div class="span12">
+            <ul>
+              <li><a href="#introduction">Introduction</a></li>
+              <li><a href="#reference">Reference Documentation</a></li>
+              <li><a href="#function-arguments">Function Arguments</a></li>
+              <li><a href="#cue-properties">Cue Properties</a></li>
+              <li><a href="#container-styling">Container Styling</a></li>
+              <li><a href="#examples">Examples</a></li>
+              <li><a href="#rendering">Rendering as a Movie</a></li>
+            </ul>
+
+            <h1 id="introduction">Introduction</h1>
+            <div id="demo-titles"><a id="demo-start" class="btn">Start Demo</a></div>
+
+            <p>This plugin allows you to define a sequence of events to be played back in
+            the selected container element.  Typical events might include:</p>
+
+            <ul>
+              <li>adding text, images etc at particular x/y coordinates</li>
+              <li>fading text in or out by animating opacity</li>
+              <li>scrolling text up or down by animating the position</li>
+              <li>wiping text in or out by animating the element width</li>
+            </ul>
+
+            <p>Any elements that can be included in HTML can be included in a title sequence.
+            All styling can be applied using CSS as normal.  Many CSS properties can be
+            animated to create fades, wipes, scrolls and zooms.</p>
+
+            <p>The <a href="#examples">examples</a> directory includes some demos to get you started.</p>
+
+            <p>The plugin is dual-licensed under the MIT and GPL licences.</p>
+
+            <h1 id="reference">Reference Documentation</h1>
+
+            <p>To use the jquery.titlesequence plugin, you'll need two things:</p>
+
+            <ul>
+              <li>a target container element where 'playback' of the title sequence will occur</li>
+              <li>a <code>sequence</code> of <code>cue</code> definitions</li>
+            </ul>
+
+            <p>The <code>sequence</code> is just an array, and each <code>cue</code> is
+            just a Javascript object-literal whose properties define what should happen.  For
+            example:</p>
+
+            <pre>
+  $('#titles').titleSequence([
+      {
+          content: "Line one",
+          pause: 500
+      },
+      {
+          content: "Line two"
+      }
+  ]);</pre>
+
+            <p>The first cue in this sequence will add one line of text ("Line one") to
+            the element with the ID "titles" then, after a 500 millisecond pause, add a
+            second line of text.  The position, and appearance of the text can be set by
+            supplying a <code>css</code> property in the <code>cue</code> object:</p>
+
+            <pre>
+  {
+      content: "Line one",
+      css: { top: '100px', left: '180px' },
+      pause: 500
+  },</pre>
+
+            <p>You can also supply a <code>class</code> property which allows you to
+            define your styling rules in a CSS file.  The content you provide will be
+            wrapped in a <code>&lt;div&gt;</code> and your <code>class</code> will be
+            added to the div.  Similarly, you can provide an <code>id</code> to
+            uniquely identify the element for later operations.</p>
+
+            <p>To trigger an animation effect, you should supply an <code>animate</code>
+            property which defines new CSS values to animate towards, and a <code>duration</code>
+            property defining how many milliseconds the animation should last.</p>
+
+            <h2 id="function-arguments">Function Arguments</h2>
+
+            <p>The <code>titleSequence()</code> function accepts two arguments:</p>
+
+            <pre>
+  $('#titles').titleSequence(sequence, options);</pre>
+
+            <p>The <code>sequence</code> argument must be an array of <code>cue</code>
+            object-literals.  The expected object properties are shown below.
+            The array can also include functions.  Each function will be called at the
+            appropriate point in the sequence and will be passed a single argument - an
+            object through which your function can access the supplied options and then
+            call the object's <code>next_cue</code> method to resume processing remaining
+            cues in the sequence.</p>
+
+            <p>The <code>options</code> argument allows you to override global aspects
+            of the title sequence.  Currently only one option is recognised:</p>
+
+            <dl class="opt-list">
+
+              <dt>time_factor</dt>
+              <dd>This multiplier (which defaults to 1) is applied to each <code>duration</code>
+              and <code>pause</code> value.  So for example if you specify a value of
+              2, the sequence will take twice as long to play back.  This is particularly
+              useful if you are attempting to screen-cap frames of the animation for playback
+              as a movie and your hardware is not able to keep up with a higher frame rate.</dd>
+
+            </dl>
+
+            <h2 id="cue-properties">Cue Properties</h2>
+
+            <p>When defining a <code>cue</code>, you can provide combinations of the following
+            properties.  In the definitions below, the "<i>target element</i>" is either an existing
+            element that matched the <code>selector</code> you provided or if there was no
+            selector but there was content, then the target will be a new element which is
+            created and added.</p>
+
+            <dl class="prop-list">
+
+              <dt>animate</dt> <dd>A collection of CSS properties and their
+              target values in standard object-literal syntax as used by
+              jQuery's <code>css</code> method.  Must be used in combination
+              with a <code>duration</code>.</dd>
+
+              <dt>class</dt>
+              <dd>This class (or space-separated list of classes) will be applied
+              to the target element.</dd>
+
+              <dt>container</dt>
+              <dd>Optional selector for an element within the main container, to which the content
+              for this queue should be added.  Useful for grouping elements.</dd>
+
+              <dt>content</dt>
+              <dd>Plain text or HTML markup which will be applied as the innerHTML
+              of the target element, replacing any existing content it might have.</dd>
+
+              <dt>css</dt> <dd>A collection of CSS properties and their
+              starting values in standard jQuery object-literal syntax.</dd>
+
+              <dt>delete</dt> <dd>A jQuery selector - the matching element(s)
+              will be removed from DOM.</dd>
+
+              <dt>duration</dt>
+              <dd>Must be used in combination with an <code>animate</code>.  Specifies the
+              number of milliseconds that the animation should last.</dd>
+
+              <dt>easing</dt>
+              <dd>Must be used in combination with an <code>animate</code>.  Specifies the
+              easing function used to control how the speed of the animation changes with
+              time.  The only two valid values with default jQuery are 'swing' (the default)
+              and 'linear'.  You can install other easing functions (e.g.: jQueryUI includes
+              some).</dd>
+
+              <dt>id</dt>
+              <dd>A unique identifier that will be added to the generated wrapper div for
+              you content.  This is useful for selecting the element again in a later
+              cue in order to animate it further or to delete it.</dd>
+
+              <dt>no_wait</dt>
+              <dd>Must be used in combination with an <code>animate</code>.  If set to
+              <code>true</code>, the sequencer will immediately proceed to the next cue
+              without waiting for this animation to end.  This allows you to have multiple
+              elements animating at the same time.</dd>
+
+              <dt>pause</dt>
+              <dd>Number of millisecond to pause after the animation finishes (if one was
+              defined in this cue) and before moving to the next cue.</dd>
+
+              <dt>selector</dt>
+              <dd>A jQuery selector which will be used to identify the target element.</dd>
+
+            </dl>
+
+
+            <h1 id="container-styling">Container Styling</h1>
+
+            <p>You will probably want to use CSS to style your title sequence container
+            element to allow absolute positioning of title elements; disable word wrapping
+            and hide overflow:</p>
+
+            <pre>
+  #titles {
+    position: relative;
+    width: 640px;
+    height: 480px;
+    background-color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+  }</pre>
+
+
+
+            <h1 id="examples">Examples</h1>
+
+            <dl>
+
+              <dt><a href="examples/01-simple.html">Example 1 - Simple</a></dt>
+
+              <dd>A very simple sequence with one piece of text fading in and another
+              wiping in.</dd>
+
+              <dt><a href="examples/02-scrolling.html">Example 2 - Scrolling</a></dt>
+
+              <dd>A scrolling effect in the style of movie closing credits.</dd>
+
+              <dt><a href="examples/intro-demo.html">Example 3 - Intro Demo</a></dt>
+
+              <dd>The introductory demo at the top of this page.</dd>
+
+              <dt><a href="examples/04-loop.html">Example 4 - Looping</a></dt>
+
+              <dd>The final 'cue' in an animation sequence can be a function to
+              replay the sequence.</dd>
+
+            </dl>
+
+
+            <h1 id="rendering">Rendering as a Movie</h1>
+
+            <p>As well as publishing your title sequence in a web page, you can also render
+            it to a movie file (e.g.: .mp4 or .avi).  The examples directory includes a
+            script called <a href="examples/ph-render.js">ph-render.js</a> which can be used
+            with <a href="http://phantomjs.org/">PhantomJS</a> (a headless WebKit browser)
+            for this purpose.</p>
+
+            <p>You would start by editing ph-render.js to set the URL of the
+            page you want to render as well as the page width and height and
+            possibly the frame rate.  Then you would run the script like this
+            (adjust path to wherever you installed PhantomJS):</p>
+
+            <pre>
+  /opt/phantomjs/bin/phantomjs ./ph-render.js</pre>
+
+            <p>This will give you a directory full of PNG images which you can
+            then assemble into an animated GIF using ImageMagick, or into a
+            video using a tool like ffmpeg (AKA: avconv), e.g.:</p>
+
+            <pre>
+  avconv -i frames/frame_%04d.png -vcodec libx264 -preset veryslow -qp 0 movie.mp4</pre>
+
+            <p>(You can choose a different video codec and quality level, but
+            this example produces a top quality file which you can compress
+            later if needed).</p>
+
+            <p>Here's an example rendered movie - note it's quite a small frame size so
+            it's best viewed at 1:1 rather than stretched to full screen:
+            <a href="examples/movie.avi">movie.avi</a>.</p>
+
+
+            <hr>
+
+            <p>Copyright &copy; 2012-2017 Grant McLean</p>
+
+          </div><!--/span-->
+        </div><!--/row-->
+
+      </div><!--/span-->
+    </div><!--/row-->
+
+  </div><!--/.fluid-container-->
+
+  <script src="examples/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="jquery.titlesequence.js"></script>
+  <script src="examples/intro-demo.js"></script>
+</body>
+</html>
